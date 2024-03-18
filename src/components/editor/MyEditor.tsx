@@ -14,43 +14,22 @@ import { FloatingToolbarButtons } from '../plate-ui/floating-toolbar-buttons'
 import { MentionCombobox } from '../plate-ui/mention-combobox'
 import { CommentsPopover } from '../plate-ui/comments-popover'
 
-const initialValue = [
-    {
-        id: '1',
-        type: 'p',
-        children: [{ text: 'write something here...' }],
-    },
-]
-
-export default function PlateEditor() {
-    const [state, setState] = useState(() => {
-        try {
-            const store = localStorage.getItem('editor_item')
-            return store ? JSON.parse(store) : initialValue
-        } catch (e: any) {
-            localStorage.removeItem('editor_item')
-            return initialValue
-        }
-    })
-
-    const set_editor_local_storage = debounce(
-        () => localStorage.setItem('editor_item', JSON.stringify(state)),
-        2000
-    )
-
-    useEffect(() => {
-        set_editor_local_storage()
-    }, [state])
+export default function PlateEditor({
+    state,
+    onChange,
+}: {
+    state: any
+    onChange: any
+}) {
     return (
         <DndProvider backend={HTML5Backend}>
             <CommentsProvider users={{}} myUserId="1">
-                <Plate plugins={plugins} value={state} onChange={setState}>
+                <Plate plugins={plugins} value={state} onChange={onChange}>
                     <FixedToolbar>
                         <FixedToolbarButtons />
                     </FixedToolbar>
 
-                    <Editor className="mt-8 p-8" />
-
+                    <Editor focusRing={false} className="mt-8 p-8 h-max" />
                     <FloatingToolbar>
                         <FloatingToolbarButtons />
                     </FloatingToolbar>

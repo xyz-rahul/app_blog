@@ -13,7 +13,12 @@ export default function PlateEditor({ value }: { value: any }) {
         <DndProvider backend={HTML5Backend}>
             <CommentsProvider users={{}} myUserId="1">
                 <Plate plugins={plugins} value={value}>
-                    <Editor className="mt-8 p-8" readOnly={true} />
+                    <Editor
+                        variant="ghost"
+                        focusRing={false}
+                        className="mt-8 p-8 h-max"
+                        readOnly={true}
+                    />
                     <MentionCombobox items={[]} />
                     <CommentsPopover />
                 </Plate>
