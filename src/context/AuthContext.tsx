@@ -37,7 +37,6 @@ export default function AuthContextWrapper({
     const [user, setUser] = useState<User | null | undefined>()
 
     useEffect(() => {
-        console.log('use eff user ', user)
     }, [user])
 
     useEffect(() => {
@@ -49,14 +48,12 @@ export default function AuthContextWrapper({
     }, [])
 
     async function signUpWithEmailAndPassword(email: string, password: string) {
-        console.log('sign up', email, password)
         try {
             const userCredential = await createUserWithEmailAndPassword(
                 auth,
                 email,
                 password
             )
-            console.log('cred', userCredential)
             setUser(userCredential.user)
         } catch (error) {
             const errorCode = (error as AuthError).code

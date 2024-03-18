@@ -22,21 +22,16 @@ export default function SignUpPage() {
     }>({ email: '', password: '' })
     async function submitForm() {
         const { email, password } = response
-        // if (!email || email.length === 0 || !password || password.length === 0)
-        //     throw new Error('email or password is not provided')
-        console.log('login page', email, password)
         await signUpWithEmailAndPassword(email, password)
     }
     return (
         <>
             <div className="flex h-screen">
-                {/* Left Pane */}
                 <div className="hidden lg:flex items-center justify-center flex-1 bg-white text-black">
                     <div className="max-w-md text-center">
                         <img src="/signup.svg" alt="singup-photo" />
                     </div>
                 </div>
-                {/* Right Pane */}
                 <div className="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
                     <div className="max-w-md w-full p-6">
                         <h1 className="text-3xl font-semibold mb-6 text-black text-center">

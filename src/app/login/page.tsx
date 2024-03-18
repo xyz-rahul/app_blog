@@ -23,9 +23,6 @@ export default function LoginPage() {
     }>({ email: '', password: '' })
     async function submitForm() {
         const { email, password } = response
-        // if (!email || email.length === 0 || !password || password.length === 0)
-        //     throw new Error('email or password is not provided')
-        console.log('login page', email, password)
         await signInWithEmailAndPassword(email, password)
     }
     return (

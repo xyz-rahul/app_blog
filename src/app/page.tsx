@@ -1,74 +1,41 @@
-import MyEditor from '@/components/editor/MyEditor'
-import ReadOnlyEditor from '@/components/editor/ReadOnlyEditor'
-import { getBlog } from './actions'
 import BlogCard from '@/components/BlogCard'
+import {
+    collection,
+    getDocs,
+    getFirestore,
+    limit,
+    orderBy,
+    query,
+    startAt,
+} from 'firebase/firestore'
+import { app } from '@/firebase'
+const db = getFirestore(app)
 
-const x = [
-    {
-        id: '1',
-        type: 'p',
-        children: [
-            {
-                text: 'write something here...',
-            },
-        ],
-    },
-    {
-        type: 'p',
-        children: [
-            {
-                text: 'heell',
-            },
-        ],
-        id: 'yyb0w',
-    },
-    {
-        type: 'p',
-        children: [
-            {
-                text: 's',
-            },
-        ],
-        id: '81kmo',
-    },
-    {
-        type: 'p',
-        children: [
-            {
-                text: 'sdfsd',
-            },
-        ],
-        id: 'oizmd',
-    },
-    {
-        type: 'p',
-        children: [
-            {
-                text: '',
-            },
-        ],
-        id: 'yhhsn',
-    },
-]
 export default async function Home() {
-    // await getBlog()
+    const documentSnapshots = query(
+        collection(db, 'blog'),
+        orderBy('timestamp'),
+        startAt(0),
+        limit(8)
+    )
+    const blogsSnapshot = await getDocs(documentSnapshots)
+
+    const blogs: any[] = []
+    blogsSnapshot.forEach((doc) => {
+        blogs.push({ id: doc.id, ...doc.data() }) // Include document ID in the data
+    })
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            <div className="flex justify-center align-middle">
-                <BlogCard />
-            </div>
-            <div className="flex justify-center align-middle">
-                <BlogCard />
-            </div>
-            <div className="flex justify-center align-middle">
-                <BlogCard />
-            </div>
-            <div className="flex justify-center align-middle">
-                <BlogCard />
-            </div>
-            <div className="flex justify-center align-middle">
-                <BlogCard />
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {blogs.map((blog) => (
+                <div key={blog.id} className="flex justify-center items-center">
+                    <BlogCard
+                        id={blog.id}
+                        title={blog.title}
+                        summary={blog.summary}
+                    />
+                </div>
+            ))}
         </div>
     )
 }
