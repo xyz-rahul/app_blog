@@ -17,6 +17,7 @@ const initialValue = [
 export default function page() {
     const router = useRouter()
     const [title, setTitle] = useState('')
+    const [summary, setSummary] = useState('')
     const [state, setState] = useState(() => {
         try {
             const store = localStorage.getItem('editor_item')
@@ -48,6 +49,26 @@ export default function page() {
                     placeholder="Title"
                     className="text-3xl font-bold p-2 outline-none"
                     onChange={(e) => setTitle(e.target.value)}
+                />
+            </div>
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+                <label htmlFor="w3review">Review of W3Schools:</label>
+
+                <textarea
+                    id="w3review"
+                    name="w3review"
+                    rows={4}
+                    className="w-full"
+                >
+                    At w3schools.com you will learn how to make a website. They
+                    offer free tutorials in all web development technologies.
+                </textarea>
+                <input
+                    type="text"
+                    id="summary"
+                    placeholder="summary"
+                    className="text-2xl p-2 outline-none"
+                    onChange={(e) => setSummary(e.target.value)}
                 />
             </div>
             <MyEditor state={state} onChange={setState} />

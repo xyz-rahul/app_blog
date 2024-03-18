@@ -1,5 +1,7 @@
 import MyEditor from '@/components/editor/MyEditor'
 import ReadOnlyEditor from '@/components/editor/ReadOnlyEditor'
+import { getBlog } from './actions'
+import BlogCard from '@/components/BlogCard'
 
 const x = [
     {
@@ -48,11 +50,25 @@ const x = [
         id: 'yhhsn',
     },
 ]
-export default function Home() {
+export default async function Home() {
+    // await getBlog()
     return (
-        <div>
-            <h1>home</h1>
-            <ReadOnlyEditor value={x} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="flex justify-center align-middle">
+                <BlogCard />
+            </div>
+            <div className="flex justify-center align-middle">
+                <BlogCard />
+            </div>
+            <div className="flex justify-center align-middle">
+                <BlogCard />
+            </div>
+            <div className="flex justify-center align-middle">
+                <BlogCard />
+            </div>
+            <div className="flex justify-center align-middle">
+                <BlogCard />
+            </div>
         </div>
     )
 }
