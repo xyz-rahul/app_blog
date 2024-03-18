@@ -6,6 +6,7 @@ import {
     AuthError,
     signInWithEmailAndPassword as firebase_signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
+    signOut as firebase_signOut,
 } from 'firebase/auth'
 import React, { ReactNode, createContext, useState, useEffect } from 'react'
 import { app } from '@/firebase'
@@ -14,6 +15,7 @@ const auth = getAuth(app)
 
 type AuthContextType = {
     user: User | null | undefined
+    isLoggedIn: () => boolean
     signOut: () => Promise<void>
     signUpWithEmailAndPassword: (
         email: string,
@@ -64,7 +66,7 @@ export default function AuthContextWrapper({
 
     async function signOut() {
         try {
-            await signOut()
+            await firebase_signOut(auth)
             setUser(null)
         } catch (error) {
             // Handle error
@@ -81,8 +83,22 @@ export default function AuthContextWrapper({
         }
     }
 
+    function isLoggedIn() {
+        try {
+            const auth = getAuth(app)
+            const user = auth.currentUser
+
+            if (user) return true
+            return false
+        } catch (error: any) {
+            const errorCode = (error as AuthError).code
+            const errorMessage = (error as AuthError).message
+        }
+    }
+
     const authContextValue: AuthContextType = {
         user,
+        isLoggedIn,
         signOut,
         signUpWithEmailAndPassword,
         signInWithEmailAndPassword,

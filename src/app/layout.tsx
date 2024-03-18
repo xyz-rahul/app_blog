@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { TooltipProvider } from '@/components/plate-ui/tooltip'
 import AuthContextWrapper from '@/context/AuthContext'
+import Navbar from '@/components/Navbar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +21,7 @@ export default function RootLayout({
         <html lang="en">
             <body className={inter.className}>
                 <AuthContextWrapper>
+                    <Navbar />
                     <TooltipProvider
                         disableHoverableContent
                         delayDuration={500}
