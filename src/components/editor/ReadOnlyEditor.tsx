@@ -16,7 +16,7 @@ export default function PlateEditor({ value }: { value: any }) {
                     <Editor
                         variant="ghost"
                         focusRing={false}
-                        className="mt-8 p-8 h-max"
+                        className="px-8 py-2 h-max"
                         readOnly={true}
                     />
                     <MentionCombobox items={[]} />
