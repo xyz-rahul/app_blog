@@ -36,8 +36,7 @@ export default function AuthContextWrapper({
 }) {
     const [user, setUser] = useState<User | null | undefined>()
 
-    useEffect(() => {
-    }, [user])
+    useEffect(() => {}, [user])
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (authUser) => {
@@ -80,7 +79,7 @@ export default function AuthContextWrapper({
         }
     }
 
-    function isLoggedIn() {
+    function isLoggedIn(): boolean {
         try {
             const auth = getAuth(app)
             const user = auth.currentUser
@@ -90,6 +89,7 @@ export default function AuthContextWrapper({
         } catch (error: any) {
             const errorCode = (error as AuthError).code
             const errorMessage = (error as AuthError).message
+            return false
         }
     }
 

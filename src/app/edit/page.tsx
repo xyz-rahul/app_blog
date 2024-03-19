@@ -1,10 +1,9 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react'
-import MyEditor from '@/components/editor/MyEditor'
-import debounce from 'debounce'
-import { Button } from '@/components/plate-ui/button'
+import React, { useContext, useState } from 'react'
 import { addBlog } from './actions'
 import { useRouter } from 'next/navigation'
+import MyEditor from '@/components/editor/MyEditor'
+import { Button } from '@/components/plate-ui/button'
 import { AuthContext } from '@/context/AuthContext'
 
 const initialValue = [
@@ -19,65 +18,55 @@ export default function Edit() {
     const context = useContext(AuthContext)
     const router = useRouter()
 
-    if (context) {
-        const { isLoggedIn } = context
-        if (!isLoggedIn()) {
-            router.push('/login')
-            return <div>log in</div>
-        }
-        const [title, setTitle] = useState('')
-        const [summary, setSummary] = useState('')
-        const [state, setState] = useState(() => {
-            try {
-                const store = localStorage.getItem('editor_item')
-                return store ? JSON.parse(store) : initialValue
-            } catch (e: any) {
-                localStorage.removeItem('editor_item')
-                return initialValue
-            }
-        })
+    const [state, setState] = useState(initialValue)
+    const [title, setTitle] = useState('')
+    const [summary, setSummary] = useState('')
 
-        const set_editor_local_storage = debounce(
-            () => localStorage.setItem('editor_item', JSON.stringify(state)),
-            2000
-        )
+    async function handleSubmit(event: React.SyntheticEvent) {
+        event.preventDefault()
+        const id = await addBlog(title, summary, state)
+        router.push(`view/${id}`)
+    }
 
-        useEffect(() => {
-            set_editor_local_storage()
-        }, [state])
-        async function handleSubmit() {
-            const id = await addBlog(title, summary, state)
-            router.push(`view/${id}`)
-        }
+    // useEffect(() => {
+    //     if (context && !context.user) router.push('/login')
+    // }, [context, router])
+
+    if (context && context.user) {
         return (
-            <form className="py-4 px-8 mt-4" action={handleSubmit}>
-                <div className="grid w-full max-w-sm items-center gap-1.5">
+            <form className="py-4 px-8 mt-4" onSubmit={handleSubmit}>
+                <div className="w-full items-center gap-1.5">
                     <input
                         type="text"
                         id="title"
                         placeholder="Title"
-                        className="text-3xl font-bold p-2 outline-none"
+                        className="text-3xl w-full font-bold p-2 outline-none"
+                        value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
                     />
                 </div>
-                <div className="grid w-full max-w-sm items-center gap-1.5">
+                <div className="grid w-full items-center gap-1.5">
                     <textarea
                         id="summary"
                         name="summary"
                         rows={4}
-                        className="w-full"
-                        placeholder="summary"
+                        placeholder="Summary"
                         className="text-2xl p-2 outline-none"
+                        value={summary}
                         onChange={(e) => setSummary(e.target.value)}
                         required
                     />
                 </div>
                 <MyEditor state={state} onChange={setState} />
                 <div className="flex justify-center m-1">
-                    <Button className="min-w-[50%] m-1">submit</Button>
+                    <Button className="min-w-[50%] m-1" type="submit">
+                        Submit
+                    </Button>
                 </div>
             </form>
         )
+    } else {
+        return <div>loading...</div>
     }
 }

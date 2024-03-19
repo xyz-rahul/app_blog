@@ -2,6 +2,7 @@
 import { AuthContext } from '@/context/AuthContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function SignUpPage() {
     const authContext = useContext(AuthContext)
@@ -11,9 +12,9 @@ export default function SignUpPage() {
     }
     const router = useRouter()
 
-    useEffect(() => {
-        if (authContext.isLoggedIn()) router.push('/')
-    }, [authContext])
+    // useEffect(() => {
+    //     if (authContext.isLoggedIn()) router.push('/')
+    // }, [authContext])
 
     const { signUpWithEmailAndPassword } = authContext
     const [response, setResponse] = useState<{
@@ -26,13 +27,14 @@ export default function SignUpPage() {
     }
     return (
         <>
-            <div className="flex h-screen">
+            <div className="h-screen grid grid-cols-1 lg:grid-cols-2">
                 <div className="hidden lg:flex items-center justify-center flex-1 bg-white text-black">
                     <div className="max-w-md text-center">
                         <img src="/signup.svg" alt="singup-photo" />
                     </div>
                 </div>
-                <div className="w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
+
+                <div className="w-full bg-gray-100 flex items-center justify-center">
                     <div className="max-w-md w-full p-6">
                         <h1 className="text-3xl font-semibold mb-6 text-black text-center">
                             Sign Up
