@@ -68,6 +68,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18",
     "react-lite-youtube-embed": "^2.4.0",
+    "react-loading-icons": "^1.1.0",
     "react-tweet": "^3.2.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7"

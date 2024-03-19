@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import MyEditor from '@/components/editor/MyEditor'
 import { Button } from '@/components/plate-ui/button'
 import { AuthContext } from '@/context/AuthContext'
+import { TailSpin } from 'react-loading-icons'
 
 const initialValue = [
     {
@@ -22,9 +23,13 @@ export default function Edit() {
     const [title, setTitle] = useState('')
     const [summary, setSummary] = useState('')
 
+    const [submitPending, setSubmitPending] = useState(false)
     async function handleSubmit(event: React.SyntheticEvent) {
         event.preventDefault()
+        setSubmitPending(true)
         const id = await addBlog(title, summary, state)
+        console.log('id')
+        setSubmitPending(false)
         router.push(`view/${id}`)
     }
 
@@ -60,8 +65,12 @@ export default function Edit() {
                 </div>
                 <MyEditor state={state} onChange={setState} />
                 <div className="flex justify-center m-1">
-                    <Button className="min-w-[50%] m-1" type="submit">
-                        Submit
+                    <Button
+                        className="min-w-[50%] m-1"
+                        type="submit"
+                        disabled={submitPending}
+                    >
+                        {submitPending ? <TailSpin /> : 'Submit'}
                     </Button>
                 </div>
             </form>
